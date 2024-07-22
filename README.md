@@ -1,30 +1,33 @@
-# React + TypeScript + Vite
+# My Utility X (MUX)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
 
-Currently, two official plugins are available:
+My Utility X (MUX) is an innovative suite of tools designed to simplify your daily tasks and boost productivity. Our platform offers a range of powerful utilities, including an Expense Manager and a Link Shortener, all crafted to streamline your daily activities and enhance your digital experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Status
 
-## Expanding the ESLint configuration
+🚧 **Under Development** 🚧
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+My Utility X is currently in active development. We're working hard to bring you a comprehensive set of tools that will make a real difference in your daily life.
 
-- Configure the top-level `parserOptions` property like this:
+## Features in Development
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+- **Expense Manager**: An intuitive tool to track your spending, categorize transactions, and gain insights into your financial habits.
+- **Link Shortener**: Create concise, shareable links instantly, perfect for social media and marketing campaigns.
+- **Cloud Sync**: Access your data from any device, ensuring your information is always up-to-date.
+- **Customizable Dashboard**: Tailor your workspace to your specific needs.
+- **Detailed Analytics**: Gain valuable insights across all your tools and activities.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Future Availability
+
+We're excited about the potential of My Utility X and are working diligently to make it available to the public. The platform will be accessible at https://app.mux04.com once launched.
+
+## Stay Connected
+
+While we're still in development
+
+- Follow me on [Twitter](https://x.com/omarammurame)
+- Connect on [LinkedIn](https://www.linkedin.com/in/ammura)
+
+
+We appreciate your interest in My Utility X. Stay tuned for more updates as we continue to develop this exciting platform!
