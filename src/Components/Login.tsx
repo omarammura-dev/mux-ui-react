@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Authentication from "../Service/Auth/Authentication";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -21,10 +22,17 @@ const Login: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Here you would typically handle the login logic
-    console.log("Login attempt with:", { email, password });
-    // For now, let's just navigate to the dashboard
-    navigate("/");
+    Authentication.login(email, password)
+      .then((isSuccess) => {
+        if (isSuccess) {
+          navigate("/");
+        } else {
+          console.error("Login failed");
+        }
+      })
+      .catch((error) => {
+        console.error("Login error:", error);
+      });
   };
 
   return (

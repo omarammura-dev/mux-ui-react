@@ -1,7 +1,11 @@
 const config = {
-    drawer:{
-        items:["Dashboard", "Settings", "Help"]
-    }
-}
+  drawer: {
+    items: ["Links", "Settings", "Help", "Logout"],
+  },
+  roles: {
+    admin: "ADMIN",
+    user: "USER",
+  },
+};
 
 export default config;

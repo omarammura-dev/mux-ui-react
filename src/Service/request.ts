@@ -1,8 +1,6 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import Authentication from "./Auth/Authentication";
 
-const api = Authentication.getAxiosInstance();
-
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
 interface RequestOptions<T = any, R = any>
@@ -19,6 +17,7 @@ async function request<T = any, R = any>({
   ...config
 }: RequestOptions<T, R>): Promise<R> {
   try {
+    const api = Authentication.getAxiosInstance();
     const response = await api.request<T, AxiosResponse<R>>({
       method,
       url,

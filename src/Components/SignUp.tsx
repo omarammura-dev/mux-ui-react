@@ -10,9 +10,12 @@ import {
   Paper,
   Avatar,
   Grid,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Authentication from "../Service/Auth/Authentication";
 
 const SignUp: React.FC = () => {
   const [name, setName] = useState("");
@@ -20,15 +23,25 @@ const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const navigate = useNavigate();
   const isDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Here you would typically handle the signup logic
-    console.log("Signup attempt with:", { name, surname, email, password });
-    // For now, let's just navigate to the dashboard
-    navigate("/");
+    Authentication.signup(
+      name.toLowerCase(),
+      surname.toLowerCase(),
+      email.toLowerCase(),
+      password
+    ).then((isSuccess) => {
+      if (isSuccess) {
+        setShowSuccessMessage(true);
+        setTimeout(() => {
+          navigate("/auth/login");
+        }, 3000);
+      }
+    });
   };
 
   return (
@@ -159,7 +172,7 @@ const SignUp: React.FC = () => {
             Sign Up
           </Button>
           <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-            <Link  variant="body2" onClick={() => navigate("/auth/login")}>
+            <Link variant="body2" onClick={() => navigate("/auth/login")}>
               {"Already have an account? Sign In"}
             </Link>
           </Box>
@@ -182,6 +195,17 @@ const SignUp: React.FC = () => {
           {"."}
         </Typography>
       </Box>
+      <Snackbar
+        open={showSuccessMessage}
+        autoHideDuration={3000}
+        onClose={() => setShowSuccessMessage(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert severity="success" sx={{ width: "100%" }}>
+          Sign up successful! We've sent a verification email. Redirecting to
+          login...
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };

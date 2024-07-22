@@ -16,6 +16,8 @@ import {
   createTheme,
   Paper,
   CircularProgress,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
@@ -24,6 +26,8 @@ import {
   Help as HelpIcon,
   Brightness4,
   Brightness7,
+  ExitToApp as LogoutIcon,
+  AdminPanelSettings as AdminIcon,
 } from "@mui/icons-material";
 import config from "../Config";
 import Authentication from "../Service/Auth/Authentication";
@@ -34,6 +38,8 @@ const Dashboard: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,17 +47,18 @@ const Dashboard: React.FC = () => {
       setIsLoading(true);
       try {
         const isAuthenticated = Authentication.isAuthenticated();
-        console.log("Authentication status:", isAuthenticated);
         if (!isAuthenticated) {
-          console.log("User is not authenticated, redirecting to login");
           navigate("/auth/login");
         } else {
-          console.log("User is authenticated");
+          const role = Authentication.extractRoleFromToken();
+          console.log("role", role);
+          console.log("config.roles.admin", config.roles.admin);
+          setIsAdmin(role === config.roles.admin);
           setIsLoading(false);
         }
       } catch (error) {
-        console.error("Error checking authentication:", error);
-        navigate("/auth/login");
+        // navigate("/auth/login");
+        console.log("error", error);
       }
     };
     checkAuth();
@@ -91,8 +98,26 @@ const Dashboard: React.FC = () => {
     },
   });
 
-  const handleNavigation = (path: string) => {
-    navigate(path.toLowerCase());
+  const handleNavigation = (text: string) => {
+    if (text.toLowerCase() === "logout") {
+      Authentication.logout();
+      navigate("/auth/login");
+    } else {
+      navigate(text.toLowerCase());
+    }
+  };
+
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleAdminPanelClick = () => {
+    handleMenuClose();
+    navigate("/admin");
   };
 
   if (isLoading) {
@@ -141,6 +166,31 @@ const Dashboard: React.FC = () => {
             >
               My Utility x
             </Typography>
+            {isAdmin && (
+              <>
+                <IconButton
+                  color="inherit"
+                  onClick={handleMenuOpen}
+                  sx={{
+                    mr: 2,
+                    bgcolor: "rgba(255,255,255,0.1)",
+                    "&:hover": { bgcolor: "rgba(255,255,255,0.2)" },
+                  }}
+                >
+                  <AdminIcon />
+                </IconButton>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                >
+                  <MenuItem onClick={handleAdminPanelClick}>
+                    Admin Panel
+                  </MenuItem>
+                </Menu>
+              </>
+            )}
+
             <IconButton
               color="inherit"
               onClick={toggleTheme}
@@ -193,8 +243,10 @@ const Dashboard: React.FC = () => {
                       <DashboardIcon />
                     ) : index === 1 ? (
                       <SettingsIcon />
-                    ) : (
+                    ) : index === 2 ? (
                       <HelpIcon />
+                    ) : (
+                      <LogoutIcon />
                     )}
                   </ListItemIcon>
                   <ListItemText
