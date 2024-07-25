@@ -3,11 +3,13 @@ import Authentication from "./Auth/Authentication";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
-interface RequestOptions<T = any, R = any>
-  extends Omit<AxiosRequestConfig, "method" | "url" | "data"> {
+interface RequestOptions<>extends Omit<
+    AxiosRequestConfig,
+    "method" | "url" | "data"
+  > {
   method: HttpMethod;
   url: string;
-  data?: T;
+  data?: any;
 }
 
 async function request<T = any, R = any>({
@@ -15,7 +17,7 @@ async function request<T = any, R = any>({
   url,
   data,
   ...config
-}: RequestOptions<T, R>): Promise<R> {
+}: RequestOptions): Promise<R> {
   try {
     const api = Authentication.getAxiosInstance();
     const response = await api.request<T, AxiosResponse<R>>({
@@ -33,30 +35,30 @@ async function request<T = any, R = any>({
 
 const get = <R = any>(
   url: string,
-  config?: Omit<RequestOptions<never, R>, "method" | "url" | "data">
+  config?: Omit<RequestOptions, "method" | "url" | "data">
 ) => request<never, R>({ method: "GET", url, ...config });
 
 const post = <T = any, R = any>(
   url: string,
   data?: T,
-  config?: Omit<RequestOptions<T, R>, "method" | "url" | "data">
+  config?: Omit<RequestOptions, "method" | "url" | "data">
 ) => request<T, R>({ method: "POST", url, data, ...config });
 
 const put = <T = any, R = any>(
   url: string,
   data?: T,
-  config?: Omit<RequestOptions<T, R>, "method" | "url" | "data">
+  config?: Omit<RequestOptions, "method" | "url" | "data">
 ) => request<T, R>({ method: "PUT", url, data, ...config });
 
 const del = <R = any>(
   url: string,
-  config?: Omit<RequestOptions<never, R>, "method" | "url" | "data">
+  config?: Omit<RequestOptions, "method" | "url" | "data">
 ) => request<never, R>({ method: "DELETE", url, ...config });
 
 const patch = <T = any, R = any>(
   url: string,
   data?: T,
-  config?: Omit<RequestOptions<T, R>, "method" | "url" | "data">
+  config?: Omit<RequestOptions, "method" | "url" | "data">
 ) => request<T, R>({ method: "PATCH", url, data, ...config });
 
 export { request, get, post, put, del, patch };
