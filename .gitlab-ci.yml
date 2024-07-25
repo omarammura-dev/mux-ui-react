@@ -45,7 +45,7 @@ deploy:
     - ssh $USER@$IP_ADDRESS "docker pull $CI_REGISTRY_IMAGE"
     - ssh $USER@$IP_ADDRESS "docker stop mux-ui || true && docker rm mux-ui || true"
     - ssh $USER@$IP_ADDRESS "docker network create my-network || true"
-    - ssh $USER@$IP_ADDRESS "docker run -d --name mux-ui --network my-network -p 5000:5000 -e VITE_API_URL=$VITE_API_URL $CI_REGISTRY_IMAGE"
+    - ssh $USER@$IP_ADDRESS "docker run -d --name mux-ui --network my-network -p 5173:5173 -e VITE_API_URL=$VITE_API_URL $CI_REGISTRY_IMAGE"
   artifacts:
     paths:
       - dist/
