@@ -28,7 +28,7 @@ build image:
     - docker build -t $CI_REGISTRY_IMAGE .
     - docker push $CI_REGISTRY_IMAGE
   only:
-    - master
+    - main
 
 deploy:
   stage: deploy
@@ -44,4 +44,4 @@ deploy:
     - ssh $USER@$IP_ADDRESS "docker stop react-app || true && docker rm react-app || true"
     - ssh $USER@$IP_ADDRESS "docker run -d --name react-app -p 5000:5000 $CI_REGISTRY_IMAGE"
   only:
-    - master
+    - main
