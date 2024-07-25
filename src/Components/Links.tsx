@@ -115,7 +115,16 @@ function Links() {
           alignItems="center"
           mb={4}
         >
-          <Typography variant="h4" component="h1" fontWeight="bold">
+          <Typography
+            variant="h4"
+            component="h1"
+            fontWeight="bold"
+            className="dark:text-white text-black"
+            sx={{
+              color: (theme) =>
+                theme.palette.mode === "dark" ? "white" : "black",
+            }}
+          >
             Your Links
           </Typography>
           <Button
@@ -128,94 +137,117 @@ function Links() {
             Add New Link
           </Button>
         </Box>
-        <Grid container spacing={3}>
-          {links?.map((link: LinkData) => (
-            <Grid item xs={12} sm={6} md={4} key={link._id}>
-              <Fade in={true} timeout={500}>
-                <Card
-                  elevation={3}
-                  sx={{
-                    borderRadius: 2,
-                    transition: "0.3s",
-                    "&:hover": { transform: "translateY(-5px)", boxShadow: 6 },
-                  }}
-                >
-                  <CardContent>
-                    <Typography
-                      variant="h6"
-                      component="h2"
-                      fontWeight="bold"
-                      gutterBottom
-                    >
-                      {link.name}
-                    </Typography>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        bgcolor: "grey.100",
-                        borderRadius: 1,
-                        p: 1,
-                        mb: 2,
-                      }}
-                    >
+        {links && links.length > 0 ? (
+          <Grid container spacing={3}>
+            {links.map((link: LinkData) => (
+              <Grid item xs={12} sm={6} md={4} key={link._id}>
+                <Fade in={true} timeout={500}>
+                  <Card
+                    elevation={3}
+                    sx={{
+                      borderRadius: 2,
+                      transition: "0.3s",
+                      "&:hover": { transform: "translateY(-5px)", boxShadow: 6 },
+                    }}
+                  >
+                    <CardContent>
                       <Typography
-                        variant="body2"
+                        variant="h6"
+                        component="h2"
+                        fontWeight="bold"
+                        gutterBottom
+                      >
+                        {link.name}
+                      </Typography>
+                      <Box
                         sx={{
-                          flexGrow: 1,
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
+                          display: "flex",
+                          alignItems: "center",
+                          bgcolor: "grey.100",
+                          borderRadius: 1,
+                          p: 1,
+                          mb: 2,
                         }}
                       >
-                        {link.shortUrl}
-                      </Typography>
-                      <IconButton
-                        onClick={() => handleCopyShortUrl(link.shortUrl)}
-                        size="small"
-                        sx={{ ml: 1 }}
-                      >
-                        <ContentCopyIcon fontSize="small" />
-                      </IconButton>
-                    </Box>
-                    <Box display="flex" alignItems="center" mt={2}>
-                      <Tooltip title="Created At" arrow>
-                        <Chip
-                          icon={<CalendarTodayIcon />}
-                          label={format(
-                            new Date(link.createdAt),
-                            "MMM d, yyyy"
-                          )}
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            flexGrow: 1,
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {link.shortUrl}
+                        </Typography>
+                        <IconButton
+                          onClick={() => handleCopyShortUrl(link.shortUrl)}
                           size="small"
-                          sx={{ mr: 1 }}
-                        />
-                      </Tooltip>
-                      <Tooltip title="Clicks" arrow>
-                        <Chip
-                          icon={<MouseIcon />}
-                          label={link.clicks}
-                          size="small"
-                          color="primary"
-                        />
-                      </Tooltip>
-                    </Box>
-                  </CardContent>
-                  <CardActions
-                    disableSpacing
-                    sx={{ justifyContent: "flex-end" }}
-                  >
-                    <IconButton
-                      aria-label="delete"
-                      onClick={() => handleDelete(link._id)}
+                          sx={{ ml: 1 }}
+                        >
+                          <ContentCopyIcon fontSize="small" />
+                        </IconButton>
+                      </Box>
+                      <Box display="flex" alignItems="center" mt={2}>
+                        <Tooltip title="Created At" arrow>
+                          <Chip
+                            icon={<CalendarTodayIcon />}
+                            label={format(
+                              new Date(link.createdAt),
+                              "MMM d, yyyy"
+                            )}
+                            size="small"
+                            sx={{ mr: 1 }}
+                          />
+                        </Tooltip>
+                        <Tooltip title="Clicks" arrow>
+                          <Chip
+                            icon={<MouseIcon />}
+                            label={link.clicks}
+                            size="small"
+                            color="primary"
+                          />
+                        </Tooltip>
+                      </Box>
+                    </CardContent>
+                    <CardActions
+                      disableSpacing
+                      sx={{ justifyContent: "flex-end" }}
                     >
-                      <DeleteIcon />
-                    </IconButton>
-                  </CardActions>
-                </Card>
-              </Fade>
-            </Grid>
-          ))}
-        </Grid>
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() => handleDelete(link._id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </CardActions>
+                  </Card>
+                </Fade>
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            minHeight="50vh"
+          >
+            <Typography variant="h6" color="textSecondary" gutterBottom>
+              You don't have any links yet.
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleClickOpen}
+              startIcon={<LinkIcon />}
+              sx={{ mt: 2, borderRadius: 28, textTransform: "none" }}
+            >
+              Create Your First Link
+            </Button>
+          </Box>
+        )}
       </Box>
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
         <DialogTitle>Add New Link</DialogTitle>

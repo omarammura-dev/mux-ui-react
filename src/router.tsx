@@ -1,9 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import NotFound from "./Components/NotFound";
-import Dashboard from "./Components/Dashboard"; // Changed import
+import Dashboard from "./Components/Dashboard";
 import Login from "./Components/Login";
 import SignUp from "./Components/SignUp";
 import Links from "./Components/Links";
+import ExpenseStatistics from "./Components/Expenses";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
       {
         path: "/Links",
         element: <Links />,
+      },
+      {
+        path: "/Expenses",
+        element: <ExpenseStatistics />,
       },
     ],
   },

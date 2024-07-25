@@ -1,6 +1,6 @@
 const config = {
   drawer: {
-    items: ["Links", "Settings", "Help", "Logout"],
+    items: ["Links", "Expenses", "Help", "Logout"],
   },
   roles: {
     admin: "ADMIN",

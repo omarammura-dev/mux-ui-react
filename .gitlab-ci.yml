@@ -1,0 +1,47 @@
+image: node:18-alpine
+
+stages:
+  - build
+  - build-docker
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+
+build:
+  stage: build
+  script:
+    - npm ci
+    - npm run build
+  artifacts:
+    paths:
+      - build/
+
+build image:
+  stage: build-docker
+  image: docker
+  services:
+    - docker:dind
+  script:
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY --password-stdin
+    - docker build -t $CI_REGISTRY_IMAGE .
+    - docker push $CI_REGISTRY_IMAGE
+  only:
+    - master
+
+deploy:
+  stage: deploy
+  script:
+    - echo "deployment started!"
+    - "which ssh-agent || ( apk update && apk add openssh-client )"
+    - eval $(ssh-agent -s) && echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - ssh $USER@$IP_ADDRESS "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
+    - ssh $USER@$IP_ADDRESS "docker pull $CI_REGISTRY_IMAGE"
+    - ssh $USER@$IP_ADDRESS "docker stop react-app || true && docker rm react-app || true"
+    - ssh $USER@$IP_ADDRESS "docker run -d --name react-app -p 5000:5000 $CI_REGISTRY_IMAGE"
+  only:
+    - master

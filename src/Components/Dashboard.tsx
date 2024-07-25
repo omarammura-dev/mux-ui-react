@@ -22,12 +22,12 @@ import {
 import {
   Menu as MenuIcon,
   Dashboard as DashboardIcon,
-  Settings as SettingsIcon,
   Help as HelpIcon,
   Brightness4,
   Brightness7,
   ExitToApp as LogoutIcon,
   AdminPanelSettings as AdminIcon,
+  AttachMoney as AttachMoneyIcon,
 } from "@mui/icons-material";
 import config from "../Config";
 import Authentication from "../Service/Auth/Authentication";
@@ -36,7 +36,10 @@ const drawerWidth = 240;
 
 const Dashboard: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedMode = localStorage.getItem("darkMode");
+    return savedMode ? JSON.parse(savedMode) : false;
+  });
   const [isLoading, setIsLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -63,6 +66,10 @@ const Dashboard: React.FC = () => {
     };
     checkAuth();
   }, [navigate]);
+
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+  }, [darkMode]);
 
   const theme = useTheme();
   const toggleTheme = () => {
@@ -242,7 +249,7 @@ const Dashboard: React.FC = () => {
                     {index === 0 ? (
                       <DashboardIcon />
                     ) : index === 1 ? (
-                      <SettingsIcon />
+                      <AttachMoneyIcon />
                     ) : index === 2 ? (
                       <HelpIcon />
                     ) : (

@@ -9,30 +9,58 @@ import {
   Link,
   Paper,
   Avatar,
+  Snackbar,
+  CircularProgress,
 } from "@mui/material";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Authentication from "../Service/Auth/Authentication";
 
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref,
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
   const isDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setLoading(true);
+    setError(null);
     Authentication.login(email, password)
       .then((isSuccess) => {
         if (isSuccess) {
-          navigate("/");
+          setSuccess(true);
+          setTimeout(() => navigate("/"), 1500);
         } else {
-          console.error("Login failed");
+          setError("Login failed. Please check your credentials.");
         }
       })
       .catch((error) => {
         console.error("Login error:", error);
+        setError(`Error: ${error.message || "An unexpected error occurred"}`);
+      })
+      .finally(() => {
+        setLoading(false);
       });
+  };
+
+  const handleCloseSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setError(null);
+    setSuccess(false);
   };
 
   return (
@@ -106,13 +134,14 @@ const Login: React.FC = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
             disabled={
+              loading ||
               !email ||
               !password ||
               !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email) ||
               password.length < 8
             }
           >
-            Sign In
+            {loading ? <CircularProgress size={24} /> : "Sign In"}
           </Button>
           <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
             <Link variant="body2" onClick={() => navigate("/auth/signup")}>
@@ -123,18 +152,6 @@ const Login: React.FC = () => {
             </Link>
           </Box>
         </Box>
-        {/* <Divider sx={{ width: '100%', mt: 3, mb: 2 }} /> */}
-        {/* <Typography variant="body2" color="text.secondary" align="center">
-          Or sign in with
-        </Typography>
-        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', gap: 2 }}>
-          <Button variant="outlined" onClick={() => console.log('Google sign-in')}>
-            Google
-          </Button>
-          <Button variant="outlined" onClick={() => console.log('Facebook sign-in')}>
-            Facebook
-          </Button>
-        </Box> */}
       </Paper>
       <Box sx={{ mt: 5 }}>
         <Typography
@@ -153,6 +170,16 @@ const Login: React.FC = () => {
           {"."}
         </Typography>
       </Box>
+      <Snackbar open={!!error} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
+          {error}
+        </Alert>
+      </Snackbar>
+      <Snackbar open={success} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+          Login successful! Redirecting...
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };
