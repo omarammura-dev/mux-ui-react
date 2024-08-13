@@ -5,6 +5,7 @@ import Links from "./Components/Links";
 import Login from "./Components/Login";
 import NotFound from "./Components/NotFound";
 import SignUp from "./Components/SignUp";
+import PasswordReset from "./Components/ForgotPassword";
 
 const router = createBrowserRouter([
   {
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/reset-password",
-        element: <ForgotPassword />
+        element: <PasswordReset />
       }
     ]
 
