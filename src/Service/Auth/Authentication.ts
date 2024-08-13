@@ -6,7 +6,8 @@ export class Authentication {
   private token: string | null = null;
   constructor() {
     this.axiosInstance = axios.create({
-      baseURL: import.meta.env.VITE_API_URL,
+      // baseURL: import.meta.env.VITE_API_URL,
+      baseURL: "https://api.mux04.com",
     });
 
     this.setupInterceptors();
