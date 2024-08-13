@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
-import NotFound from "./Components/NotFound";
 import Dashboard from "./Components/Dashboard";
-import Login from "./Components/Login";
-import SignUp from "./Components/SignUp";
-import Links from "./Components/Links";
 import ExpenseStatistics from "./Components/Expenses";
+import Links from "./Components/Links";
+import Login from "./Components/Login";
+import NotFound from "./Components/NotFound";
+import SignUp from "./Components/SignUp";
 
 const router = createBrowserRouter([
   {
@@ -18,17 +18,29 @@ const router = createBrowserRouter([
       {
         path: "/Expenses",
         element: <ExpenseStatistics />,
-      },
+      }
     ],
   },
   {
-    path: "/auth/login",
+    path: "/auth",
     element: <Login />,
+    children: [
+      {
+        path: "/login",
+        element: <SignUp />,
+      }, {
+        path: "/signup",
+        element: <SignUp />,
+      },
+      {
+        path: "/reset-password",
+        element: <ForgotPassword />
+      }
+    ]
+
   },
-  {
-    path: "/auth/signup",
-    element: <SignUp />,
-  },
+
+
   {
     path: "*",
     element: <NotFound />,
