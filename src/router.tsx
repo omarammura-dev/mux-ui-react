@@ -6,6 +6,7 @@ import Login from "./Components/Login";
 import NotFound from "./Components/NotFound";
 import SignUp from "./Components/SignUp";
 import PasswordReset from "./Components/ForgotPassword";
+import FileStorageView from "./Components/FileStorageView";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,11 @@ const router = createBrowserRouter([
       {
         path: "/Expenses",
         element: <ExpenseStatistics />,
-      }
+      },
+      {
+        path: "/file-storage",
+        element: <FileStorageView />,
+      },
     ],
   },
   {
@@ -34,7 +39,6 @@ const router = createBrowserRouter([
     path: "/auth/reset-password",
     element: <PasswordReset />,
   },
-
 
   {
     path: "*",

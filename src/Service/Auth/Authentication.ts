@@ -7,7 +7,8 @@ export class Authentication {
   constructor() {
     this.axiosInstance = axios.create({
       // baseURL: import.meta.env.VITE_API_URL,
-      baseURL: "https://api.mux04.com",
+      // baseURL: "https://api.mux04.com",
+       baseURL: "http://localhost:8080",
     });
 
     this.setupInterceptors();

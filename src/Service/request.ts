@@ -3,27 +3,28 @@ import Authentication from "./Auth/Authentication";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
-interface RequestOptions<>extends Omit<
-    AxiosRequestConfig,
-    "method" | "url" | "data"
-  > {
+interface RequestOptions<T = any>
+  extends Omit<AxiosRequestConfig, "method" | "url" | "data"> {
   method: HttpMethod;
   url: string;
-  data?: any;
+  data?: T;
+  responseType?: AxiosRequestConfig["responseType"];
 }
 
 async function request<T = any, R = any>({
   method,
   url,
   data,
+  responseType,
   ...config
-}: RequestOptions): Promise<R> {
+}: RequestOptions<T>): Promise<R> {
   try {
     const api = Authentication.getAxiosInstance();
     const response = await api.request<T, AxiosResponse<R>>({
       method,
       url,
       data,
+      responseType,
       ...config,
     });
     return response.data;
