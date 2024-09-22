@@ -165,7 +165,6 @@ const FileStorageView: React.FC = () => {
           filename: file.name,
           filedata: fileData,
         });
-        console.log("body", body);
         xhr.send(body);
       }
     };
@@ -236,7 +235,7 @@ const FileStorageView: React.FC = () => {
       return;
     }
     try {
-      const res = await del(`/file/${fileToDelete.id}`);
+      const res = await del(`/file/${fileToDelete.fileId}`);
       if (res.status === 200) {
         console.log("File deleted successfully");
         setFiles(files.filter((file) => file.id !== fileToDelete.id));

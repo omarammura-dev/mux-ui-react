@@ -22,7 +22,7 @@ import {
 import {
   Menu as MenuIcon,
   Dashboard as DashboardIcon,
-  Help as HelpIcon,
+  FileCopy as FilesIcon,
   Brightness4,
   Brightness7,
   ExitToApp as LogoutIcon,
@@ -54,14 +54,11 @@ const Dashboard: React.FC = () => {
           navigate("/auth/login");
         } else {
           const role = Authentication.extractRoleFromToken();
-          console.log("role", role);
-          console.log("config.roles.admin", config.roles.admin);
           setIsAdmin(role === config.roles.admin);
           setIsLoading(false);
         }
       } catch (error) {
         // navigate("/auth/login");
-        console.log("error", error);
       }
     };
     checkAuth();
@@ -229,39 +226,43 @@ const Dashboard: React.FC = () => {
         >
           <Paper elevation={0} sx={{ height: "100%", borderRadius: 0 }}>
             <List>
-              {config.drawer.items.map((text, index) => (
-                <ListItem
-                  button
-                  key={text}
-                  onClick={() => handleNavigation(text)}
-                  sx={{
-                    my: 1,
-                    mx: 2,
-                    borderRadius: 2,
-                    "&:hover": {
-                      bgcolor: theme.palette.action.hover,
-                      transform: "scale(1.02)",
-                      transition: "all 0.2s",
-                    },
-                  }}
-                >
-                  <ListItemIcon>
-                    {index === 0 ? (
-                      <DashboardIcon />
-                    ) : index === 1 ? (
-                      <AttachMoneyIcon />
-                    ) : index === 2 ? (
-                      <HelpIcon />
-                    ) : (
-                      <LogoutIcon />
-                    )}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={text}
-                    primaryTypographyProps={{ fontWeight: "medium" }}
-                  />
-                </ListItem>
-              ))}
+              {config.drawer.items
+                .filter(
+                  (text) => isAdmin || text.toLowerCase() !== "file-storage"
+                )
+                .map((text, index) => (
+                  <ListItem
+                    button
+                    key={text}
+                    onClick={() => handleNavigation(text)}
+                    sx={{
+                      my: 1,
+                      mx: 2,
+                      borderRadius: 2,
+                      "&:hover": {
+                        bgcolor: theme.palette.action.hover,
+                        transform: "scale(1.02)",
+                        transition: "all 0.2s",
+                      },
+                    }}
+                  >
+                    <ListItemIcon>
+                      {index === 0 ? (
+                        <DashboardIcon />
+                      ) : index === 1 ? (
+                        <AttachMoneyIcon />
+                      ) : index === 2 ? (
+                        <FilesIcon />
+                      ) : (
+                        <LogoutIcon />
+                      )}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={text}
+                      primaryTypographyProps={{ fontWeight: "medium" }}
+                    />
+                  </ListItem>
+                ))}
             </List>
           </Paper>
         </Drawer>

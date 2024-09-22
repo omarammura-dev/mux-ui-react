@@ -7,6 +7,7 @@ import NotFound from "./Components/NotFound";
 import SignUp from "./Components/SignUp";
 import PasswordReset from "./Components/ForgotPassword";
 import FileStorageView from "./Components/FileStorageView";
+import ProtectedRoute from "./Components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -23,7 +24,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/file-storage",
-        element: <FileStorageView />,
+        element: (
+          <ProtectedRoute requiredRole="ADMIN">
+            <FileStorageView />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
@@ -39,7 +44,6 @@ const router = createBrowserRouter([
     path: "/auth/reset-password",
     element: <PasswordReset />,
   },
-
   {
     path: "*",
     element: <NotFound />,
