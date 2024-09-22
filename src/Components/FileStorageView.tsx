@@ -26,7 +26,7 @@ import {
   MoreVert as MoreVertIcon,
 } from "@mui/icons-material";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import { del, get, post } from "../Service/request";
+import { del, get } from "../Service/request";
 import Authentication from "../Service/Auth/Authentication";
 
 interface FileItem {
